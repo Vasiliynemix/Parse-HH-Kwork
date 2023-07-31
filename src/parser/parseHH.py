@@ -81,6 +81,10 @@ class ParseHH:
                 await bot.send_message(self.callback.from_user.id,
                                        f'Сбор даты размещения завершен')
                 count_list = 0
+
+                driver.get(url=url)
+
+                find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
                 for block in find_block:
                     await bot.send_message(self.callback.from_user.id,
                                            f'Собираю все остальные данные со страницы')
