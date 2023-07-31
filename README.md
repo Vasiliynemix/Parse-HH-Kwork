@@ -60,6 +60,35 @@ sudo nano ~/.bashrc
 
 sudo reboot
 
+cd /etc/systemd/system/
+
+sudo nano Parse-HH-Kwork.service
+
+[Unit]
+Description=Parse-HH-Kwork
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=nemix
+WorkingDirectory=/home/nemix/Parse-HH-Kwork
+ExecStart=/home/nemix/Parse-HH-Kwork/venv/bin/python3 -m src.bot
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable Parse-HH-Kwork
+sudo systemctl start Parse-HH-Kwork
+
+sudo systemctl restart Parse-HH-Kwork
+
+sudo systemctl status Parse-HH-Kwork
+
+
 python3 -m src.bot
 
 

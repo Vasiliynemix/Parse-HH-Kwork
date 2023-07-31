@@ -131,7 +131,8 @@ class ParseHH:
                     driver.get(url=url)
 
         except Exception as _ex:
-            print(_ex)
+            await bot.send_message(5254091301,
+                                   f'{_ex}')
         finally:
             driver.close()
             driver.quit()
@@ -142,7 +143,7 @@ class ParseHH:
         return True
 
     async def __get_url(self, page):
-        url = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=false&salary={str(self.price)}&only_with_salary=true&text={self.name}&no_magic=true&ored_clusters=true&page={str(page)}'
+        url = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=false&salary={str(self.price)}&only_with_salary=true&text={self.name}&no_magic=true&ored_clusters=true&page={str(page)}&search_period=30'
         return url
 
     @staticmethod
