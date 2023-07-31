@@ -28,7 +28,9 @@ class ParseHH:
         options.set_preference('general.useragent.override', user_agent.random)
         options.headless = True
 
+        await bot.send_message(self.callback.from_user.id, text='Запуск селениума')
         driver = webdriver.Firefox(options=options)
+        await bot.send_message(self.callback.from_user.id, text='Селениум запущен')
 
         try:
             url = await self.__get_url(0)
