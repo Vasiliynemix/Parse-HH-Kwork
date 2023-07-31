@@ -78,6 +78,8 @@ class ParseHH:
 
                     public_date_list.append(date)
 
+                await bot.send_message(self.callback.from_user.id,
+                                       f'Сбор даты размещения завершен')
                 count_list = 0
                 for block in find_block:
                     await bot.send_message(self.callback.from_user.id,
