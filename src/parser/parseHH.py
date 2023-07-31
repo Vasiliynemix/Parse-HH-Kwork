@@ -57,9 +57,11 @@ class ParseHH:
 
                 public_date_list = []
                 count_link = 0
+                await bot.send_message(self.callback.from_user.id,
+                                       f'Собираю все даты размещения на странице, может занять какое-то время')
                 while True:
                     await bot.send_message(self.callback.from_user.id,
-                                           f'Собираю все даты размещения на странице, может занять какое-то время')
+                                           f'Парсится {i + 1} ссылка')
                     driver.get(url=url)
 
                     link_block = driver.find_elements(By.CLASS_NAME, 'serp-item__title')

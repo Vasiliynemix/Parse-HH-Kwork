@@ -40,11 +40,25 @@ sudo apt install python3-pip
 
 pip install -r requirements.txt
 
+which firefox
+
 wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
 
 tar -xvzf geckodriver*
 
+chmod +x geckodriver
+
 sudo mv geckodriver /usr/bin/
+cd /usr/bin
+sudo chown root:root geckodriver
+
+pip3 install selenium
+
+sudo nano ~/.bashrc
+    export PATH=$PATH:"/usr/bin/firefox"
+    export PATH=$PATH:"/usr/bin/geckodriver"
+
+sudo reboot
 
 python3 -m src.bot
 
