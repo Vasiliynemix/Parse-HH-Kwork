@@ -59,16 +59,14 @@ class ParseHH:
                 count_link = 0
                 await bot.send_message(self.callback.from_user.id,
                                        f'Собираю все даты размещения на странице, может занять какое-то время')
-                while True:
+                while count_link <= len(find_block) - 1:
                     await bot.send_message(self.callback.from_user.id,
                                            f'Парсится {count_link + 1} ссылка из {len(find_block)}')
                     driver.get(url=url)
 
                     link_block = driver.find_elements(By.CLASS_NAME, 'serp-item__title')
-                    try:
-                        find_links = link_block[count_link]
-                    except:
-                        break
+
+                    find_links = link_block[count_link]
 
                     count_link += 1
 
