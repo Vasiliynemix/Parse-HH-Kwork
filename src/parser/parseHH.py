@@ -61,9 +61,9 @@ class ParseHH:
                 find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
 
                 link = 1
+                await bot.send_message(self.callback.from_user.id,
+                                       f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
                 for block in find_block:
-                    await bot.send_message(self.callback.from_user.id,
-                                           f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
                     data = {
                         'price': None,
                         'company': None,
@@ -105,6 +105,9 @@ class ParseHH:
                         self.callback.from_user.id,
                         f'Цена: {data["price"]}\nКомпания: {data["company"]}\nНазвание: {data["name"]}\nДата размещения: {data["public_date"]}'
                     )
+                    link += 1
+                    await bot.send_message(self.callback.from_user.id,
+                                           f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
 
         except Exception as _ex:
             await bot.send_message(5254091301,
