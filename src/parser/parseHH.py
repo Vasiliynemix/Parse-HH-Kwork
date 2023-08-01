@@ -106,8 +106,9 @@ class ParseHH:
                         f'Цена: {data["price"]}\nКомпания: {data["company"]}\nНазвание: {data["name"]}\nДата размещения: {data["public_date"]}'
                     )
                     link += 1
-                    await bot.send_message(self.callback.from_user.id,
-                                           f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
+                    if link <= len(find_block):
+                        await bot.send_message(self.callback.from_user.id,
+                                               f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
 
         except Exception as _ex:
             await bot.send_message(5254091301,
