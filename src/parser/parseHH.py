@@ -60,7 +60,10 @@ class ParseHH:
 
                 find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
 
+                link = 1
                 for block in find_block:
+                    await bot.send_message(self.callback.from_user.id,
+                                           f'Парсится {link}ая вакансия из {len(find_block)} на страницу')
                     data = {
                         'price': None,
                         'company': None,
@@ -70,14 +73,14 @@ class ParseHH:
 
                     find_links = block.find_element(By.CLASS_NAME, 'serp-item__title')
                     find_links.click()
-                    time.sleep(10)
+                    time.sleep(2)
 
                     driver.switch_to.window(driver.window_handles[1])
 
                     date_public = driver.find_element(By.CLASS_NAME, 'vacancy-creation-time-redesigned').text
                     driver.close()
                     driver.switch_to.window(driver.window_handles[0])
-                    time.sleep(10)
+                    time.sleep(2)
 
                     name = find_links.text
                     price = block.find_element(By.CLASS_NAME, 'bloko-header-section-2').text
