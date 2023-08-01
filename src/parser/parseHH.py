@@ -27,12 +27,11 @@ class ParseHH:
         options = webdriver.FirefoxOptions()
         options.set_preference('general.useragent.override', user_agent.random)
         options.set_preference('dom.webdriver.enabled', False)
-        options.headless = True
+        # options.headless = True
 
         await bot.send_message(self.callback.from_user.id, text='Запуск селениума')
 
         driver = webdriver.Firefox(options=options)
-        driver.close()
 
         await bot.send_message(self.callback.from_user.id, text='Селениум запущен')
 
@@ -51,8 +50,6 @@ class ParseHH:
             except Exception as _ex:
                 pages = 1
 
-            driver.close()
-
             for j in range(0, pages):
 
                 url = await self.__get_url(j)
@@ -63,7 +60,7 @@ class ParseHH:
 
                 find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
 
-                for block in find_block[:2]:
+                for block in find_block:
                     data = {
                         'price': None,
                         'company': None,
