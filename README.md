@@ -44,7 +44,10 @@ which firefox
 
 wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
 
+
 tar -xvzf geckodriver*
+tar -xvzf chromedriver*
+
 
 chmod +x geckodriver
 
@@ -85,6 +88,9 @@ sudo systemctl enable Parse-HH-Kwork
 sudo systemctl start Parse-HH-Kwork
 
 sudo systemctl restart Parse-HH-Kwork
+sudo systemctl disable Parse-HH-Kwork
+sudo systemctl stop FSM_example_bot
+journalctl -u FSM_example_bot
 
 sudo systemctl status Parse-HH-Kwork
 

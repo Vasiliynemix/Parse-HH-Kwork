@@ -26,16 +26,18 @@ class ParseHH:
         user_agent = UserAgent()
         options = webdriver.FirefoxOptions()
         options.set_preference('general.useragent.override', user_agent.random)
-        options.headless = True
+        options.set_preference('dom.webdriver.enabled', False)
+        # options.headless = True
 
         await bot.send_message(self.callback.from_user.id, text='Запуск селениума')
+
         driver = webdriver.Firefox(options=options)
+
         await bot.send_message(self.callback.from_user.id, text='Селениум запущен')
 
         try:
             url = await self.__get_url(0)
             driver.get(url=url)
-            time.sleep(10)
 
             try:
                 find_pages = driver.find_element(
@@ -48,46 +50,19 @@ class ParseHH:
             except Exception as _ex:
                 pages = 1
 
-            i = 0
-            while True:
-                await bot.send_message(self.callback.from_user.id,
-                                       f'Парсится {i + 1}ая страница из {pages}')
+            driver.close()
 
-                find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
+            for j in range(0, pages):
 
-                public_date_list = []
-                count_link = 0
-                await bot.send_message(self.callback.from_user.id,
-                                       f'Собираю все даты размещения на странице, может занять какое-то время')
-                while count_link <= len(find_block) - 1:
-                    await bot.send_message(self.callback.from_user.id,
-                                           f'Парсится {count_link + 1} ссылка из {len(find_block)}')
-                    driver.get(url=url)
-
-                    link_block = driver.find_elements(By.CLASS_NAME, 'serp-item__title')
-
-                    find_links = link_block[count_link]
-
-                    count_link += 1
-
-                    url_company = find_links.get_attribute('href')
-
-                    driver.get(url=url_company)
-
-                    date = driver.find_element(By.CLASS_NAME, 'vacancy-creation-time-redesigned').text
-
-                    public_date_list.append(date)
-
-                await bot.send_message(self.callback.from_user.id,
-                                       f'Сбор даты размещения завершен')
-                count_list = 0
-
+                url = await self.__get_url(j)
                 driver.get(url=url)
 
+                await bot.send_message(self.callback.from_user.id,
+                                       f'Парсится {j + 1}ая страница из {pages}')
+
                 find_block = driver.find_elements(By.CLASS_NAME, 'vacancy-serp-item__layout')
-                for block in find_block:
-                    await bot.send_message(self.callback.from_user.id,
-                                           f'Собираю все остальные данные со страницы')
+
+                for block in find_block[:2]:
                     data = {
                         'price': None,
                         'company': None,
@@ -96,6 +71,15 @@ class ParseHH:
                     }
 
                     find_links = block.find_element(By.CLASS_NAME, 'serp-item__title')
+                    find_links.click()
+                    time.sleep(10)
+
+                    driver.switch_to.window(driver.window_handles[1])
+
+                    date_public = driver.find_element(By.CLASS_NAME, 'vacancy-creation-time-redesigned').text
+                    driver.close()
+                    driver.switch_to.window(driver.window_handles[0])
+                    time.sleep(10)
 
                     name = find_links.text
                     price = block.find_element(By.CLASS_NAME, 'bloko-header-section-2').text
@@ -112,9 +96,7 @@ class ParseHH:
                     data['price'] = price
                     data['company'] = company
                     data['name'] = name
-                    data['public_date'] = public_date_list[count_list]
-
-                    count_list += 1
+                    data['public_date'] = date_public
 
                     self.__save_csv(data)
 
@@ -122,13 +104,6 @@ class ParseHH:
                         self.callback.from_user.id,
                         f'Цена: {data["price"]}\nКомпания: {data["company"]}\nНазвание: {data["name"]}\nДата размещения: {data["public_date"]}'
                     )
-
-                if i + 1 == pages:
-                    break
-                else:
-                    i += 1
-                    url = await self.__get_url(i)
-                    driver.get(url=url)
 
         except Exception as _ex:
             await bot.send_message(5254091301,

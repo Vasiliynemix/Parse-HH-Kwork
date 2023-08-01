@@ -84,7 +84,7 @@ async def run_parser(call: CallbackQuery, state: FSMContext):
     await call.answer()
     await state.set_state(FSMSettingsParse.document)
     await ParseHH(callback=call, name=data['name'], price=data['price']).parse()
-    await call.message.answer(f'Парсер запущен!\n\nname = {data["name"]}\nprice = {data["price"]}',
+    await call.message.answer(f'Получить данные👇',
                               reply_markup=keyboard.kb.get_result_doc())
 
 
