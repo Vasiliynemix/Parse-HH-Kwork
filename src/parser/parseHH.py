@@ -27,7 +27,7 @@ class ParseHH:
         options = webdriver.FirefoxOptions()
         options.set_preference('general.useragent.override', user_agent.random)
         options.set_preference('dom.webdriver.enabled', False)
-        # options.headless = True
+        options.headless = True
 
         await bot.send_message(self.callback.from_user.id, text='Запуск селениума')
 
