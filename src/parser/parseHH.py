@@ -73,14 +73,14 @@ class ParseHH:
 
                     find_links = block.find_element(By.CLASS_NAME, 'serp-item__title')
                     find_links.click()
-                    time.sleep(2)
+                    time.sleep(10)
 
                     driver.switch_to.window(driver.window_handles[1])
 
                     date_public = driver.find_element(By.CLASS_NAME, 'vacancy-creation-time-redesigned').text
                     driver.close()
                     driver.switch_to.window(driver.window_handles[0])
-                    time.sleep(2)
+                    time.sleep(10)
 
                     name = find_links.text
                     price = block.find_element(By.CLASS_NAME, 'bloko-header-section-2').text
